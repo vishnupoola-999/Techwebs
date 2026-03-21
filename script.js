@@ -353,13 +353,13 @@ upiButtons.forEach(btn => {
             e.preventDefault(); // Stop desktop browser from trying to open unhandled upi://
             const plan = btn.getAttribute('data-plan');
             const amount = btn.getAttribute('data-amount');
-            alert(`To purchase the ${plan} Plan for ₹${amount}:\nPlease open Google Pay, PhonePe, or Paytm on your phone and send the exact amount to UPI ID: 9553320142@paytm`);
+            alert(`To purchase the ${plan} Plan for ₹${amount}:\nPlease open Google Pay, PhonePe, or Paytm on your phone and send the exact amount to UPI ID: 9553320142-3@axl`);
         } else {
             // Give a fallback prompt on mobile ONLY IF the app fails to open the URI
             setTimeout(() => {
                 const plan = btn.getAttribute('data-plan');
                 const amount = btn.getAttribute('data-amount');
-                alert(`If your UPI app didn't open automatically, please manually send ₹${amount} to 9553320142@paytm for the ${plan} Plan.`);
+                alert(`If your UPI app didn't open automatically, please manually send ₹${amount} to 9553320142-3@axl for the ${plan} Plan.`);
             }, 3000);
         }
     });
