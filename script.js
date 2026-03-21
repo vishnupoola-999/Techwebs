@@ -417,20 +417,29 @@ window.handleUPIPayment = function(plan, amount) {
 };
 
 // ===== Interactive 3D Logo Implementation =====
-function init3DLogo(containerId, scale = 1) {
+function init3DLogo(containerId) {
     const container = document.getElementById(containerId);
-    if (!container) return;
+    if (!container) {
+        console.warn(`3D Logo Container #${containerId} not found.`);
+        return;
+    }
+
+    console.log(`Initializing 3D Logo for #${containerId}...`);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
     camera.position.z = 2.5;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    
+    // Get dimensions, fallback if not ready
+    let width = container.clientWidth || 45;
+    let height = container.clientHeight || 45;
+    
+    renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
-    // Group to hold the T and W
     const logoGroup = new THREE.Group();
     scene.add(logoGroup);
 
@@ -438,10 +447,10 @@ function init3DLogo(containerId, scale = 1) {
     const tGroup = new THREE.Group();
     const tMat = new THREE.MeshPhysicalMaterial({ 
         color: 0xa855f7, 
-        metalness: 0.6, 
-        roughness: 0.2,
+        metalness: 0.8, 
+        roughness: 0.1,
         emissive: 0x6b21a8,
-        emissiveIntensity: 0.5
+        emissiveIntensity: 0.3
     });
     
     const tTop = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.25, 0.25), tMat);
@@ -449,9 +458,8 @@ function init3DLogo(containerId, scale = 1) {
     const tStick = new THREE.Mesh(new THREE.BoxGeometry(0.25, 1.1, 0.25), tMat);
     tStick.position.y = 0;
     
-    tGroup.add(tTop);
-    tGroup.add(tStick);
-    tGroup.position.x = -0.5;
+    tGroup.add(tTop, tStick);
+    tGroup.position.x = -0.4; // Offset to sit next to W
     logoGroup.add(tGroup);
 
     // Create 'W' (Neon Green Wireframe)
@@ -472,47 +480,50 @@ function init3DLogo(containerId, scale = 1) {
     wGroup.add(createWBar(0.6, 0.3));
     wGroup.add(createWBar(0.9, -0.3));
     
-    wGroup.position.x = 0;
+    wGroup.position.x = 0.1;
     wGroup.position.y = -0.1;
     logoGroup.add(wGroup);
 
+    // Center the whole logo
+    logoGroup.position.x = -0.2; 
+
     // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambientLight);
-    const pointLight = new THREE.PointLight(0xffffff, 1);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const pointLight = new THREE.PointLight(0xffffff, 1.2);
     pointLight.position.set(5, 5, 5);
     scene.add(pointLight);
 
-    // Animation values
-    let targetRotationX = 0;
-    let targetRotationY = 0;
+    let targetRotX = 0;
+    let targetRotY = 0;
 
-    // Mouse interaction
     document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth) - 0.5;
-        const y = (e.clientY / window.innerHeight) - 0.5;
-        targetRotationY = x * 0.8;
-        targetRotationX = y * 0.8;
+        targetRotY = (e.clientX / window.innerWidth - 0.5) * 1.2;
+        targetRotX = (e.clientY / window.innerHeight - 0.5) * 1.2;
     });
 
     function animate() {
         requestAnimationFrame(animate);
-        
-        // Dynamic floating & Rotation
-        logoGroup.rotation.y += (targetRotationY - logoGroup.rotation.y) * 0.05;
-        logoGroup.rotation.x += (targetRotationX - logoGroup.rotation.x) * 0.05;
-        
-        // Auto-rotation idle
-        logoGroup.rotation.y += 0.005;
-        
+        logoGroup.rotation.y += (targetRotY - logoGroup.rotation.y) * 0.05;
+        logoGroup.rotation.x += (targetRotX - logoGroup.rotation.x) * 0.05;
+        logoGroup.rotation.y += 0.005; // Idle
         renderer.render(scene, camera);
     }
-    
     animate();
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+        renderer.setSize(container.clientWidth || 45, container.clientHeight || 45);
+    });
 }
 
-// Initialize logos
-window.addEventListener('load', () => {
+// Robust bootstrapper
+function startLogos() {
     init3DLogo('logo-header');
     init3DLogo('logo-footer');
-});
+}
+
+if (document.readyState === 'complete') {
+    startLogos();
+} else {
+    window.addEventListener('load', startLogos);
+}
