@@ -188,8 +188,15 @@ for (let i = 0; i < numShapes; i++) {
     
     // Spread across standard 100vh hero and down the 500vh page height
     mesh.position.x = (Math.random() - 0.5) * 25;
-    mesh.position.y = (Math.random() - 0.5) * 40; 
-    mesh.position.z = (Math.random() - 0.5) * 15 - 5;
+    
+    // Guarantee the first few shapes are always near the camera at the top
+    if (i < 4) {
+        mesh.position.y = (Math.random() - 0.5) * 10;
+        mesh.position.z = (Math.random() - 0.5) * 10 - 2; 
+    } else {
+        mesh.position.y = (Math.random() - 0.5) * 40; 
+        mesh.position.z = (Math.random() - 0.5) * 15 - 5;
+    }
     
     mesh.userData = {
         originalY: mesh.position.y,
