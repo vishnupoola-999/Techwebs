@@ -1359,10 +1359,18 @@ footer {
     .contact-wrapper {
         flex-direction: column;
         gap: 2rem;
+        padding: 2rem 1.5rem !important;
+        border-radius: 20px;
     }
     .contact-info {
         padding-right: 0 !important;
         margin-bottom: 0;
+    }
+    .contact-info h2 {
+        font-size: clamp(2rem, 8vw, 2.5rem) !important;
+    }
+    .contact-info p {
+        font-size: 0.95rem;
     }
     .footer-content {
         flex-direction: column;
