@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Webs | 3D & Conversion Web Design</title>
+    <meta name="description" content="We design 3D, conversion-focused websites for gyms, dance studios & creators in Warangal, Telangana and worldwide.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Smooth Scroll (Lenis) -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="#home" data-magnetic style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); text-transform: uppercase; font-style: italic; letter-spacing: -2px; background: linear-gradient(90deg, #ccff00, #a855f7, #00d2ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; filter: drop-shadow(0 0 10px rgba(204,255,0,0.3));">TechWebs<span class="dot" style="-webkit-text-fill-color: #fff;">.</span></a>
+        </div>
+        <div class="nav-links">
+            <a href="#work" class="nav-link" data-magnetic>Work</a>
+            <a href="#services" class="nav-link" data-magnetic>Services</a>
+            <a href="#process" class="nav-link" data-magnetic>Process</a>
+            <a href="#about" class="nav-link" data-magnetic>About</a>
+            <a href="#contact" class="nav-cta btn-gooey" data-magnetic>Let's Talk</a>
+        </div>
+    </nav>
+
+    <div class="availability-badge">
+        <div class="status-dot"></div>
+        <span>Available for 2 projects in March</span>
+    </div>
+
+    <!-- WebGL Canvas for Background -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <main class="smooth-scroll">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <div class="hero-label fade-up">We design websites that actually sell.</div>
+                <h1 class="hero-title fade-up">
+                    We design <span class="text-gradient-purple">3D, conversion-focused</span> websites for gyms, dance studios & creators.
+                </h1>
+                <p class="hero-subtitle fade-up">We are Tech Webs. We combine cutting-edge design, modern development, and marketing psychology to bring local businesses online.</p>
+                <div class="hero-ctas fade-up">
+                    <a href="https://wa.me/919553320142?text=Hey%20Tech%20Webs!%20%F0%9F%9A%80%20I'd%20like%20to%20book%20a%20free%20strategy%20call." target="_blank" class="btn btn-primary btn-gooey" data-magnetic>Book a free strategy call</a>
+                    <a href="#work" class="btn btn-secondary" data-magnetic>View selected work</a>
+                </div>
+                <div class="hero-chips fade-up">
+                    <div class="chip">Web Design + Webflow / React</div>
+                    <div class="chip">12-24 hours delivery</div>
+                    <div class="chip">Remote work in Telangana (Based in Hyd)</div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="mouse"><div class="wheel"></div></div>
+                <div class="scroll-text">Scroll</div>
+            </div>
+        </section>
+
+        <!-- About Buddy -->
+        <section class="about section-padding" id="about">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">About Tech Webs</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="about-grid">
+                    <div class="about-text fade-up">
+                        <p class="story">
+                            Hey, we are Tech Webs—a specialized studio based in Hyderabad, Telangana...
+                        </p>
+                        <h3 class="superpowers-title">Our Superpowers</h3>
+                        <ul class="superpowers-list">
+                            <li><span class="tag">01</span> Deep niche focus (gyms, dance studios, local brands)</li>
+                            <li><span class="tag">02</span> 3D & motion-enhanced interfaces that wow users</li>
+                            <li><span class="tag">03</span> Fast, SEO-ready builds designed for conversion</li>
+                            <li><span class="tag">04</span> Clear communication & async updates (no endless meetings)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Webs Team Section -->
+        <section class="tech-webs section-padding" id="team">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">Meet the <span class="text-gradient-purple">Tech Webs</span> team</h2>
+                    <div class="section-line"></div>
+                </div>
+
+                <!-- Intro Block -->
+                <div class="team-intro fade-up">
+                    <p class="story" style="max-width: 800px;">
+                        Tech Webs is our micro-studio focused on building 3D, conversion-focused websites for gyms, dance studios, creators, and local brands. The team is lean: a lead designer/dev (Pooja) plus a few specialists for front-end, back-end, and content strategy. We ensure reliable communication and end-to-end delivery.
+                    </p>
+                    <div class="hero-chips" style="margin-top: 1.5rem;">
+                        <div class="chip">Design + Dev in one place</div>
+                        <div class="chip">Small crew, big output</div>
+                        <div class="chip">Remote work in Telangana</div>
+                        <div class="chip">We speak founder language</div>
+                    </div>
+                </div>
+
+                <!-- Team Grid -->
+                <div class="team-grid fade-up">
+                    <div class="team-card 3d-tilt">
+                        <div class="team-avatar" style="background-image: url('pooja.png.jpeg'); background-size: cover; color: transparent; border: none;">P</div>
+                        <div class="team-info">
+                            <h3>Pooja</h3>
+                            <p class="team-role">Lead Designer & Front-end Dev</p>
+                            <p class="team-focus"><strong>Focus:</strong> 3D UI, interaction design, Webflow/React builds.</p>
+                            <ul class="team-superpowers">
+                                <li>Turning ideas into clean sitemaps</li>
+                                <li>Making brands look premium</li>
+                                <li>Obsessing over conversion</li>
+                            </ul>
+                        </div>
+                        <div class="team-socials">
+                            <a href="#" data-magnetic>LinkedIn</a>
+                            <a href="#" data-magnetic>GitHub</a>
+                        </div>
+                    </div>
+
+                    <div class="team-card 3d-tilt">
+                        <div class="team-avatar" style="background-image: url('vishnu.png.jpeg'); background-size: cover; color: transparent; border: none;">V</div>
+                        <div class="team-info">
+                            <h3>Vishnu</h3>
+                            <p class="team-role">Front-end Engineer</p>
+                            <p class="team-focus"><strong>Focus:</strong> React, Next.js, performance optimization.</p>
+                            <ul class="team-superpowers">
+                                <li>Smooth page transitions</li>
+                                <li>Clean reusable components</li>
+                                <li>Pixel-perfect Figma designs</li>
+                            </ul>
+                        </div>
+                        <div class="team-socials">
+                            <a href="#" data-magnetic>GitHub</a>
+                        </div>
+                    </div>
+
+                    <div class="team-card 3d-tilt">
+                        <div class="team-avatar" style="background-image: url('prem.png.jpeg'); background-size: cover; color: transparent; border: none;">Pr</div>
+                        <div class="team-info">
+                            <h3>Prem</h3>
+                            <p class="team-role">UX & Content Strategy</p>
+                            <p class="team-focus"><strong>Focus:</strong> User flows, copy, and messaging.</p>
+                            <ul class="team-superpowers">
+                                <li>Asking the right questions</li>
+                                <li>Benefit-driven copy</li>
+                                <li>Structuring pages to reduce bounce</li>
+                            </ul>
+                        </div>
+                        <div class="team-socials">
+                            <a href="#" data-magnetic>LinkedIn</a>
+                        </div>
+                    </div>
+
+                    <div class="team-card 3d-tilt">
+                        <div class="team-avatar" style="background-image: url('rahul.png.jpeg'); background-size: cover; color: transparent; border: none;">R</div>
+                        <div class="team-info">
+                            <h3>Rahul</h3>
+                            <p class="team-role">Back-end & Integrations</p>
+                            <p class="team-focus"><strong>Focus:</strong> APIs, forms, automations, simple dashboards.</p>
+                            <ul class="team-superpowers">
+                                <li>Connecting CRMs & Sheets</li>
+                                <li>Reliable form handling</li>
+                                <li>Basic DevOps & deployment</li>
+                            </ul>
+                        </div>
+                        <div class="team-socials">
+                            <a href="#" data-magnetic>GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- What Tech Webs Handles -->
+                <div class="responsibilities-strip fade-up">
+                    <h3 class="strip-title">Full Project Ownership</h3>
+                    <div class="responsibilities-scroll">
+                        <div class="resp-chip"><span class="icon">📞</span> Discovery & Strategy</div>
+                        <div class="resp-chip"><span class="icon">🗺️</span> UX Flows & wireframes</div>
+                        <div class="resp-chip"><span class="icon">✨</span> Visual design + 3D & motion</div>
+                        <div class="resp-chip"><span class="icon">💻</span> Front-end development</div>
+                        <div class="resp-chip"><span class="icon">⚙️</span> Basic back-end & integrations</div>
+                        <div class="resp-chip"><span class="icon">📈</span> SEO fundamentals & analytics</div>
+                        <div class="resp-chip"><span class="icon">🚀</span> Launch support and fixes</div>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="mini-timeline fade-up">
+                    <h3 class="strip-title" style="margin-bottom: 2rem;">Collaboration Style</h3>
+                    <div class="timeline-container">
+                        <div class="timeline-step">
+                            <div class="dot"></div>
+                            <h4>Kickoff Call</h4>
+                            <p>Requirements, goals, timelines with Pooja.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="dot"></div>
+                            <h4>Design Sprint</h4>
+                            <p>UX, UI, copy, first clickable prototype.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="dot"></div>
+                            <h4>Build & QA</h4>
+                            <p>Dev + testing by the team, weekly updates.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="dot"></div>
+                            <h4>Launch</h4>
+                            <p>Handover, documentation, optional support.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trust Elements -->
+                <div class="trust-elements fade-up">
+                    <div class="buddy-quote">
+                        <span class="quote-mark">“</span>
+                        <p>We didn't want clients to juggle five freelancers. Tech Webs is a small crew that ships complete websites without chaos.</p>
+                        <span class="quote-author">— Tech Webs</span>
+                    </div>
+                    
+                    <div class="team-cta text-center" style="margin-top: 3rem;">
+                        <a href="#contact" class="btn btn-primary btn-gooey" data-magnetic>Work with Tech Webs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-orb orb-1"></div>
+            <div class="bg-orb orb-2"></div>
+        </section>
+        <!-- 3. Services Section -->
+        <section class="services section-padding" id="services">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">What we do <span class="text-gradient-lime">best</span></h2>
+                    <div class="section-line"></div>
+                </div>
+                
+                <div class="services-grid">
+                    <div class="service-card 3d-tilt fade-up">
+                        <div class="service-icon">✦</div>
+                        <h3>Full Website Design & Build</h3>
+                        <p>End-to-end design and development for new businesses that want to start strong.</p>
+                        <ul class="deliverables">
+                            <li>Wireframes & Strategy</li>
+                            <li>Figma Design</li>
+                            <li>Webflow/React Build</li>
+                            <li>Basic SEO & Analytics</li>
+                        </ul>
+                        <div class="service-meta">
+                            <span class="timeline">Timeline: 3-5 weeks</span>
+                            <a href="#contact" class="mini-cta" data-magnetic>Request quote →</a>
+                        </div>
+                    </div>
+
+                    <div class="service-card 3d-tilt fade-up">
+                        <div class="service-icon">⟳</div>
+                        <h3>Redesign & Conversion Lift</h3>
+                        <p>For existing sites that look outdated and struggle to turn traffic into leads.</p>
+                        <ul class="deliverables">
+                            <li>UX Audit</li>
+                            <li>Conversion Optimization</li>
+                            <li>Modern Visual Overhaul</li>
+                            <li>Performance Boost</li>
+                        </ul>
+                        <div class="service-meta">
+                            <span class="timeline">Timeline: 2-4 weeks</span>
+                            <a href="#contact" class="mini-cta" data-magnetic>Request quote →</a>
+                        </div>
+                    </div>
+
+                    <div class="service-card 3d-tilt fade-up">
+                        <div class="service-icon">✧</div>
+                        <h3>3D & Interaction Enhancements</h3>
+                        <p>Integrate subtle 3D, scroll animations, and micro-interactions into your existing site.</p>
+                        <ul class="deliverables">
+                            <li>Three.js WebGL</li>
+                            <li>GSAP Animations</li>
+                            <li>Custom Cursors</li>
+                            <li>"Wow" Factor</li>
+                        </ul>
+                        <div class="service-meta">
+                            <span class="timeline">Timeline: 1-3 weeks</span>
+                            <a href="#contact" class="mini-cta" data-magnetic>Request quote →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-end-cta fade-up text-center">
+                <a href="#contact" class="btn btn-outline" data-magnetic>Ready to upgrade your website?</a>
+            </div>
+        </section>
+
+        <!-- 4. Featured Projects -->
+        <section class="work section-padding" id="work">
+            <div class="container">
+                <div class="work-header">
+                    <div class="section-header fade-up" data-scroll data-speed="0.1">
+                        <h2 class="section-title">Selected <span class="text-gradient-cyan">Work</span></h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <div class="filter-bar fade-up">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="gym">Gyms</button>
+                        <button class="filter-btn" data-filter="dance">Dance</button>
+                        <button class="filter-btn" data-filter="dental">Dental</button>
+                        <button class="filter-btn" data-filter="salon">Salon</button>
+                    </div>
+                </div>
+
+                <div class="projects-grid">
+                    <div class="project-card 3d-tilt fade-up" data-category="gym">
+                        <div class="project-image-wrapper">
+                            <div class="project-image" style="background-image: url('cover_gym_1774011828259.png'); background-size: cover; background-position: center;">
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-tags">
+                                <span class="tag">Unisex Gym</span>
+                                <span class="tag">Warangal</span>
+                            </div>
+                            <h3>Elite Gym</h3>
+                            <p class="problem"><strong>Problem:</strong> Only had Instagram, zero Google presence.</p>
+                            <p class="solution"><strong>Solution:</strong> High-impact 3D landing page with clear pricing.</p>
+                            <div class="outcome">
+                                <span class="stat text-gradient-lime">+45%</span> enquiries in first month
+                            </div>
+                            <a href="https://v-fitness.onrender.com" target="_blank" class="view-case-study" data-magnetic>View →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card 3d-tilt fade-up" data-category="dance">
+                        <div class="project-image-wrapper">
+                            <div class="project-image" style="background-image: url('cover_dance_1774011845752.png'); background-size: cover; background-position: center;">
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-tags">
+                                <span class="tag">Dance Studio</span>
+                                <span class="tag">Hyderabad</span>
+                            </div>
+                            <h3>Beatbreakers Studio</h3>
+                            <p class="problem"><strong>Problem:</strong> Outdated design leading to low class signups.</p>
+                            <p class="solution"><strong>Solution:</strong> Kinetic typography & schedule integrations.</p>
+                            <div class="outcome">
+                                <span class="stat text-gradient-cyan">2x</span> WhatsApp leads from Google
+                            </div>
+                            <a href="#" class="view-case-study" data-magnetic>View →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card 3d-tilt fade-up" data-category="dental">
+                        <div class="project-image-wrapper">
+                            <div class="project-image" style="background-image: url('cover_dental_1774011862576.png'); background-size: cover; background-position: center;">
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-tags">
+                                <span class="tag">Dental Clinic</span>
+                                <span class="tag">Hyderabad</span>
+                            </div>
+                            <h3>zensmile dental clinic</h3>
+                            <p class="problem"><strong>Problem:</strong> Hard to find online, confusing services page.</p>
+                            <p class="solution"><strong>Solution:</strong> Clean, trustworthy design with fast booking.</p>
+                            <div class="outcome">
+                                <span class="stat text-gradient-purple">3x</span> new patient leads
+                            </div>
+                            <a href="https://zensmile-dental.onrender.com" target="_blank" class="view-case-study" data-magnetic>View →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card 3d-tilt fade-up" data-category="salon">
+                        <div class="project-image-wrapper">
+                            <div class="project-image" style="background-image: url('cover_salon_1774011879924.png'); background-size: cover; background-position: center;">
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-tags">
+                                <span class="tag">Salon</span>
+                                <span class="tag">Warangal</span>
+                            </div>
+                            <h3>koti-kutz saloon</h3>
+                            <p class="problem"><strong>Problem:</strong> Low appointments through website.</p>
+                            <p class="solution"><strong>Solution:</strong> Elegant 3D visuals & seamless booking system.</p>
+                            <div class="outcome">
+                                <span class="stat text-gradient-lime">+60%</span> salon appointments
+                            </div>
+                            <a href="https://koti-kutz-saloon.onrender.com" target="_blank" class="view-case-study" data-magnetic>View →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Process Horizontal Scroll -->
+        <section class="process" id="process">
+            <div class="process-wrapper">
+                <div class="container">
+                    <div class="section-header fade-up">
+                        <h2 class="section-title">The <span class="text-gradient-purple">Process</span></h2>
+                        <div class="section-line"></div>
+                        <p style="margin-top: 1rem; color: var(--text-muted);">How we go from idea to launch.</p>
+                    </div>
+                </div>
+                
+                <div class="process-horizontal-scroll">
+                    <div class="process-timeline">
+                        <div class="timeline-line"></div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">01</div>
+                            <div class="step-icon">🔍</div>
+                            <h3>Discover</h3>
+                            <p>30-min free call to learn about your business goals and bottlenecks.</p>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">02</div>
+                            <div class="step-icon">🗺️</div>
+                            <h3>Strategy</h3>
+                            <p>Creating a solid sitemap and wireframes laser-focused on conversion.</p>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">03</div>
+                            <div class="step-icon">🎨</div>
+                            <h3>Design & Build</h3>
+                            <p>Crafting high-fidelity UI with 3D touches and developing the final product.</p>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="step-number">04</div>
+                            <div class="step-icon">🚀</div>
+                            <h3>Launch</h3>
+                            <p>Smooth handover and ongoing maintenance options.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing section-padding" id="pricing">
+            <div class="container">
+                <div class="section-header fade-up" data-scroll data-speed="0.2">
+                    <h2 class="section-title">Clear <span class="text-gradient-cyan">Pricing</span></h2>
+                    <div class="section-line"></div>
+                </div>
+
+                <div class="offer-banner fade-up" style="background: linear-gradient(90deg, rgba(204,255,0,0.1), rgba(168,85,247,0.1)); border: 1px solid var(--accent-lime); padding: 1.5rem; border-radius: 15px; margin-bottom: 3rem; text-align: center; position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(204,255,0,0.05);">
+                    <span style="font-weight: 800; text-transform: uppercase; color: var(--accent-lime); font-size: 1.2rem; letter-spacing: 1px;">⚡ Limited Time Offer</span>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 1.1rem;">The first 5 clients this month receive a <strong style="color: #fff;">FREE Custom Logo Redesign & Premium Copywriting</strong> (Valued at ₹10,000).</p>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--accent-purple); font-weight: 600;">⚠️ Only 2 spots remaining for this month.</p>
+                </div>
+                
+                <div class="pricing-grid fade-up" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+                    
+                    <!-- Plan 1 -->
+                    <div class="pricing-card 3d-tilt" style="background: rgba(255,255,255,0.03); padding: 2.5rem 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Starter</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 2rem; flex-grow: 1;">Essential 1-page presence.</p>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">₹15,000</h2>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> Pre-designed Template</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> Delivered in 24 hours</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> Basic Mobile & On-page SEO</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> Automated WhatsApp Integration</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> SSL & Domain Connection</li>
+                            <li style="color: var(--accent-lime); font-weight: 600; margin-top: 0.5rem;">Outcome: Fast professional launch</li>
+                        </ul>
+                        <a href="#payment" onclick="alert('Redirecting to secure payment gateway...')" class="btn btn-secondary" style="width: 100%; text-align: center; display: block; margin-top: auto;" data-magnetic>Subscribe Now</a>
+                    </div>
+
+                    <!-- Plan 2 -->
+                    <div class="pricing-card 3d-tilt" style="background: rgba(255,255,255,0.03); padding: 2.5rem 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Standard Build</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 2rem; flex-grow: 1;">Custom 3D landing page.</p>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">₹25,000</h2>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> 100% Custom 3D UI/UX Design</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> High-fidelity Animations</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> Advanced Form & Lead Integ.</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> 99+ Speed Score Optimized</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> 1-Month Free Minor Tweaks</li>
+                            <li style="color: var(--accent-lime); font-weight: 600; margin-top: 0.5rem;">Outcome: High-converting aesthetic</li>
+                        </ul>
+                        <a href="#payment" onclick="alert('Redirecting to secure payment gateway...')" class="btn btn-secondary" style="width: 100%; text-align: center; display: block; margin-top: auto;" data-magnetic>Subscribe Now</a>
+                    </div>
+
+                    <!-- Plan 3 -->
+                    <div class="pricing-card 3d-tilt" style="background: linear-gradient(145deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.02)); padding: 2.5rem 2rem; border-radius: 20px; border: 1px solid var(--accent-purple); position: relative; display: flex; flex-direction: column;">
+                        <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--accent-purple); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">POPULAR</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Pro Growth</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 2rem; flex-grow: 1;">Multi-page studio website.</p>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">₹45,000</h2>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
+                            <li><span style="color: var(--accent-purple); margin-right: 10px;">✔</span> CMS-powered 3-5 Page Site</li>
+                            <li><span style="color: var(--accent-purple); margin-right: 10px;">✔</span> Calendly/Booking Engine Setup</li>
+                            <li><span style="color: var(--accent-purple); margin-right: 10px;">✔</span> Custom Typography Curation</li>
+                            <li><span style="color: var(--accent-purple); margin-right: 10px;">✔</span> Custom Event Tracking via GA4</li>
+                            <li><span style="color: var(--accent-purple); margin-right: 10px;">✔</span> Unlimited Pre-Launch Revisions</li>
+                            <li style="color: var(--accent-purple); font-weight: 600; margin-top: 0.5rem;">Outcome: Fully automated client flow</li>
+                        </ul>
+                        <a href="#payment" onclick="alert('Redirecting to secure payment gateway...')" class="btn btn-primary" style="width: 100%; text-align: center; display: block; margin-top: auto;" data-magnetic>Subscribe Now</a>
+                    </div>
+                    
+                    <!-- Plan 4 -->
+                    <div class="pricing-card 3d-tilt" style="background: rgba(255,255,255,0.03); padding: 2.5rem 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Enterprise</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 2rem; flex-grow: 1;">Ultimate bespoke experience.</p>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">₹75,000</h2>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> Massive Custom Web App Build</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> Bespoke 3D Models & Spline Art</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> E-Commerce & Payment Portals</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> VIP Priority 24/7 Slack Support</li>
+                            <li><span style="color: var(--accent-lime); margin-right: 10px;">✔</span> Monthly Retainer Included</li>
+                            <li style="color: var(--accent-lime); font-weight: 600; margin-top: 0.5rem;">Outcome: Absolute industry dominance</li>
+                        </ul>
+                        <a href="#payment" onclick="alert('Redirecting to secure payment gateway...')" class="btn btn-secondary" style="width: 100%; text-align: center; display: block; margin-top: auto;" data-magnetic>Subscribe Now</a>
+                    </div>
+                </div>
+
+                <!-- Included Features -->
+                <div class="included-features fade-up" style="margin-top: 5rem;">
+                    <h3 style="text-align: center; font-size: 2rem; margin-bottom: 3rem;">Standard in <span class="text-gradient-purple">every package</span></h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center;">
+                        <div style="padding: 2rem; background: rgba(255,255,255,0.02); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s ease;" class="3d-tilt">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
+                            <h4 style="margin-bottom: 0.5rem; color: #fff;">Blazing Fast</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Built on modern tech stacks ensuring sub-second load times.</p>
+                        </div>
+                        <div style="padding: 2rem; background: rgba(255,255,255,0.02); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s ease;" class="3d-tilt">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">📱</div>
+                            <h4 style="margin-bottom: 0.5rem; color: #fff;">Mobile First</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Flawless responsive design that looks stunning on every device.</p>
+                        </div>
+                        <div style="padding: 2rem; background: rgba(255,255,255,0.02); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s ease;" class="3d-tilt">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔒</div>
+                            <h4 style="margin-bottom: 0.5rem; color: #fff;">Secure Hosting</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Premium SSL certificates and enterprise-grade hosting included.</p>
+                        </div>
+                        <div style="padding: 2rem; background: rgba(255,255,255,0.02); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s ease;" class="3d-tilt">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">📈</div>
+                            <h4 style="margin-bottom: 0.5rem; color: #fff;">SEO & Analytics</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">On-page optimization to rank higher on Google search results.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. Results & Testimonials -->
+        <section class="testimonials section-padding" id="testimonials">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2 class="section-title">Client <span class="text-gradient-lime">Love</span></h2>
+                    <div class="section-line"></div>
+                </div>
+
+                <div class="stats-row fade-up" data-scroll data-speed="0.1">
+                    <div class="stat-item">
+                        <div class="stat-number">40+</div>
+                        <div class="stat-label">Profited Clients</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4.8</div>
+                        <div class="stat-label">Average Rating</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">3x</div>
+                        <div class="stat-label">Conversion Lift</div>
+                    </div>
+                </div>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card 3d-tilt fade-up">
+                        <div class="quote-icon">"</div>
+                        <p class="quote">Working with Tech Webs completely changed our business. We went from getting 2 walk-ins a week to 15+ solid leads directly from our new website. Pooja and the team are absolute wizards.</p>
+                        <div class="client-info">
+                            <div class="client-avatar">R</div>
+                            <div>
+                                <h4 style="margin: 0;">Rakesh Goud</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Owner, Flow Fitness</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card 3d-tilt fade-up">
+                        <div class="quote-icon">"</div>
+                        <p class="quote">The 3D design they built for our dance studio blew everyone away. But more importantly, the scheduling integration Rahul developed saved us 10 hours of admin work every single week. Highly recommended!</p>
+                        <div class="client-info">
+                            <div class="client-avatar">S</div>
+                            <div>
+                                <h4 style="margin: 0;">Sneha Reddy</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Founder, Beatbreakers</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card 3d-tilt fade-up">
+                        <div class="quote-icon">"</div>
+                        <p class="quote">TechWebs completely revamped our restaurant's online presence. The new booking system is flawless and our tables are always full!</p>
+                        <div class="client-info">
+                            <div class="client-avatar">P</div>
+                            <div>
+                                <h4 style="margin: 0;">Pranathi Rao</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Manager, The Spice Route</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card 3d-tilt fade-up">
+                        <div class="quote-icon">"</div>
+                        <p class="quote">Professional, fast, and extremely effective. We saw a 3x increase in patient inquiries within the first month. Highly recommend this team.</p>
+                        <div class="client-info">
+                            <div class="client-avatar">K</div>
+                            <div>
+                                <h4 style="margin: 0;">Dr. Karthik Varma</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Lead Dentist, SmileCare</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card 3d-tilt fade-up">
+                        <div class="quote-icon">"</div>
+                        <p class="quote">The 3D interactions they added to our landing page increased our engagement rate by over 40%. Fantastic work!</p>
+                        <div class="client-info">
+                            <div class="client-avatar">K</div>
+                            <div>
+                                <h4 style="margin: 0;">Kiran Kumar</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Director, Nexus Corp</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card 3d-tilt fade-up">
+                        <div class="quote-icon">"</div>
+                        <p class="quote">I loved the aesthetic they brought to my yoga studio's website. It feels so calming yet modern. My students love booking classes online now.</p>
+                        <div class="client-info">
+                            <div class="client-avatar">D</div>
+                            <div>
+                                <h4 style="margin: 0;">Divya Reddy</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Founder, YogaZen</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card 3d-tilt fade-up">
+                        <div class="quote-icon">"</div>
+                        <p class="quote">Pooja and Vishnu were amazing to work with. They delivered exactly what they promised, on time, and the results speak for themselves.</p>
+                        <div class="client-info">
+                            <div class="client-avatar">M</div>
+                            <div>
+                                <h4 style="margin: 0;">Mahesh Yadav</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Director, Elite Gym</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card 3d-tilt fade-up">
+                        <div class="quote-icon">"</div>
+                        <p class="quote">Our new website looks incredibly premium. The team understood our brand perfectly and executed the design beautifully.</p>
+                        <div class="client-info">
+                            <div class="client-avatar">N</div>
+                            <div>
+                                <h4 style="margin: 0;">Nikhitha Reddy</h4>
+                                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Owner, Glow Salon</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Contact Form -->
+        <section class="contact section-padding" id="contact">
+            <div class="container">
+                <div class="contact-wrapper fade-up">
+                    <div class="contact-info">
+                        <h2>Let's build something <span class="text-gradient-purple">iconic.</span></h2>
+                        <p>Fill out the form to get started. We personally reply to every inquiry within 24 hours. <strong>Website delivery time is 12-24 hours.</strong></p>
+                        
+                        <div class="contact-details">
+                            <a href="mailto:techwebs.automations@gmail.com" class="contact-link" data-magnetic>techwebs.automations@gmail.com</a>
+                            <a href="tel:9553320142" class="contact-link" data-magnetic>+91 9553320142</a>
+                            <a href="#" class="contact-link" data-magnetic>Based in Hyderabad, Telangana. Remote work available.</a>
+                        </div>
+
+                        <div class="contact-map" style="margin-top: 2rem; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121822.4277742188!2d78.36988849764515!3d17.41215307328004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb99daeaebd2c7%3A0xae93b78392bafbc2!2sHyderabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+
+                    <form class="project-form" onsubmit="event.preventDefault(); const n = document.getElementById('name').value; const e = document.getElementById('email').value; const b = document.getElementById('business').value; const msg = 'Yo Tech Webs team! 🚀 I am ' + n + ' from ' + b + '. My email is ' + e + '. Let\'s build something iconic!'; window.open('https://wa.me/919553320142?text=' + encodeURIComponent(msg), '_blank');">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" required placeholder="John Doe">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required placeholder="john@company.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="business">Brand Name</label>
+                            <input type="text" id="business" required placeholder="Your Studio">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-gooey" data-magnetic>Send Brief ⚡</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="logo" style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 10vw, 3rem); text-transform: uppercase; font-style: italic; letter-spacing: -3px; background: linear-gradient(90deg, #ccff00, #a855f7, #00d2ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; filter: drop-shadow(0 0 15px rgba(168,85,247,0.3));">TechWebs<span style="-webkit-text-fill-color: #fff;">.</span></div>
+                <p>Designed & coded with care in Hyderabad, Telangana.</p>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="year">2026</span> Tech Webs. All rights reserved.</p>
+                <a href="#home" class="back-to-top" data-magnetic>↑ Back to top</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/919553320142?text=Hey%20Tech%20Webs!%20%F0%9F%9A%80%20I%20love%20your%20work.%20Let's%20build%20something%20iconic." target="_blank" class="whatsapp-float" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000; display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background-color: #25D366; color: white; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.4); text-decoration: none; transition: transform 0.3s ease;">
+        <svg viewBox="0 0 32 32" width="35" height="35" fill="currentColor">
+            <path d="M16 2.001c-7.732 0-14 6.268-14 14 0 2.478.653 4.809 1.83 6.84L2 29.999l7.309-1.884A13.91 13.91 0 0016 30c7.732 0 14-6.268 14-14s-6.268-14-14-14zm0 25.592c-2.126 0-4.135-.558-5.895-1.545l-.422-.236-4.321 1.114 1.154-4.21-.26-.403A11.516 11.516 0 014.288 16c0-6.444 5.244-11.688 11.688-11.688S27.665 9.556 27.665 16 22.42 27.593 16 27.593zm6.38-8.527c-.35-.176-2.071-1.025-2.39-1.143-.319-.118-.553-.176-.786.176-.233.351-.902 1.144-1.106 1.378-.204.234-.408.264-.758.088-.35-.176-1.479-.546-2.82-1.745-1.042-.932-1.745-2.083-1.95-2.434-.204-.351-.022-.54.153-.715.158-.158.35-.409.526-.613.175-.205.233-.352.35-.586.117-.234.058-.439-.029-.614s-.787-1.9-1.078-2.602c-.282-.683-.569-.59-.787-.601-.204-.011-.438-.011-.671-.011s-.613.088-.934.438c-.32.351-1.224 1.196-1.224 2.916 0 1.72 1.253 3.382 1.428 3.616.175.234 2.453 3.824 6.002 5.267.844.343 1.503.548 2.016.7.848.25 1.62.215 2.233.13 1-.139 2.071-.846 2.363-1.666.292-.82.292-1.522.204-1.666-.088-.147-.321-.235-.672-.41z"/>
+        </svg>
+    </a>
+    <style>
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</body>
+</html>
