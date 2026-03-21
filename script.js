@@ -415,3 +415,104 @@ window.addEventListener('load', () => {
 window.handleUPIPayment = function(plan, amount) {
     openUPIMyModal(plan, amount);
 };
+
+// ===== Interactive 3D Logo Implementation =====
+function init3DLogo(containerId, scale = 1) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    camera.position.z = 2.5;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // Group to hold the T and W
+    const logoGroup = new THREE.Group();
+    scene.add(logoGroup);
+
+    // Create 'T' (Solid Purple)
+    const tGroup = new THREE.Group();
+    const tMat = new THREE.MeshPhysicalMaterial({ 
+        color: 0xa855f7, 
+        metalness: 0.6, 
+        roughness: 0.2,
+        emissive: 0x6b21a8,
+        emissiveIntensity: 0.5
+    });
+    
+    const tTop = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.25, 0.25), tMat);
+    tTop.position.y = 0.45;
+    const tStick = new THREE.Mesh(new THREE.BoxGeometry(0.25, 1.1, 0.25), tMat);
+    tStick.position.y = 0;
+    
+    tGroup.add(tTop);
+    tGroup.add(tStick);
+    tGroup.position.x = -0.5;
+    logoGroup.add(tGroup);
+
+    // Create 'W' (Neon Green Wireframe)
+    const wGroup = new THREE.Group();
+    const wLineMat = new THREE.LineBasicMaterial({ color: 0xccff00, linewidth: 2 });
+    
+    const createWBar = (x, rotZ) => {
+        const geom = new THREE.BoxGeometry(0.15, 1.1, 0.15);
+        const wireframe = new THREE.WireframeGeometry(geom);
+        const line = new THREE.LineSegments(wireframe, wLineMat);
+        line.position.x = x;
+        line.rotation.z = rotZ;
+        return line;
+    };
+
+    wGroup.add(createWBar(0, 0.3));
+    wGroup.add(createWBar(0.3, -0.3));
+    wGroup.add(createWBar(0.6, 0.3));
+    wGroup.add(createWBar(0.9, -0.3));
+    
+    wGroup.position.x = 0;
+    wGroup.position.y = -0.1;
+    logoGroup.add(wGroup);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    // Animation values
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+
+    // Mouse interaction
+    document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) - 0.5;
+        const y = (e.clientY / window.innerHeight) - 0.5;
+        targetRotationY = x * 0.8;
+        targetRotationX = y * 0.8;
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Dynamic floating & Rotation
+        logoGroup.rotation.y += (targetRotationY - logoGroup.rotation.y) * 0.05;
+        logoGroup.rotation.x += (targetRotationX - logoGroup.rotation.x) * 0.05;
+        
+        // Auto-rotation idle
+        logoGroup.rotation.y += 0.005;
+        
+        renderer.render(scene, camera);
+    }
+    
+    animate();
+}
+
+// Initialize logos
+window.addEventListener('load', () => {
+    init3DLogo('logo-header');
+    init3DLogo('logo-footer');
+});

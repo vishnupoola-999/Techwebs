@@ -1424,6 +1424,19 @@ footer {
         display: none !important;
     }
 }
+.logo-3d-canvas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: visible; /* Allow glow to bleed out */
+}
+.logo-3d-canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.3));
+}
 
 /* ===== QR Code Modal for Desktop ===== */
 .qr-modal-overlay {
