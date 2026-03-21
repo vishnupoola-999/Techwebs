@@ -92,30 +92,13 @@ fadeElements.forEach(el => {
     gsap.to(el, {
         scrollTrigger: {
             trigger: el,
-            start: "top 85%",
+            start: "top 95%",
             toggleActions: "play none none reverse"
         },
         opacity: 1,
         y: 0,
-        duration: 0.8,
-        ease: "power3.out"
-    });
-});
-
-// Advanced Staggered Section Reveals
-gsap.utils.toArray(".container > *").forEach(section => {
-    gsap.from(section, {
-        scrollTrigger: {
-            trigger: section,
-            start: "top 90%",
-            toggleActions: "play none none none"
-        },
-        y: 50,
-        opacity: 0,
-        blur: 10,
-        duration: 1,
-        ease: "power4.out",
-        stagger: 0.2
+        duration: 0.5,
+        ease: "power2.out"
     });
 });
 
