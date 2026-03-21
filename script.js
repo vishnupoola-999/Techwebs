@@ -344,3 +344,26 @@ tiltElements.forEach(el => {
     });
 });
 
+// ===== UPI Payment Deep Linking =====
+window.handleUPIPayment = function(planName, amount) {
+    // Defaulting to the business phone number provided on the site
+    const upiId = "9553320142@paytm"; 
+    const payeeName = "TechWebs";
+    
+    // Construct the standard UPI Intent link
+    const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent('Payment for ' + planName + ' Plan')}`;
+
+    // Mobile detection
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Redirection triggers the OS to open the UPI app selection drawer
+        window.location.href = upiLink;
+        
+        // Fallback alert in case they cancelled or don't have UPI installed
+        setTimeout(() => {
+            alert(`If your UPI app didn't open automatically, please manually send ₹${amount} to ${upiId} for the ${planName} Plan.`);
+        }, 3000);
+    } else {
+        // Desktop fallback (since desktops can't deep-link to phone apps)
+        alert(`To purchase the ${planName} Plan for ₹${amount}:\nPlease open Google Pay, PhonePe, or Paytm on your phone and send the exact amount to UPI ID: ${upiId}`);
+    }
+};
