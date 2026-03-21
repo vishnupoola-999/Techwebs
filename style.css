@@ -46,8 +46,14 @@
     background: var(--accent-purple);
 }
 
-html, body {
+html {
     background-color: var(--bg-dark);
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+body {
+    background-color: transparent;
     color: var(--text-main);
     font-family: var(--font-body);
     overflow-x: hidden;
