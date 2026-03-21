@@ -366,8 +366,12 @@ upiButtons.forEach(btn => {
             if(qrPlanChoice) qrPlanChoice.textContent = plan + ' Plan';
             if(qrAmountDisplay) qrAmountDisplay.textContent = formattedAmount;
             
-            // Generate QR code dynamically via API containing original scheme parameters
-            if(qrImage) qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(upiLink)}`;
+            // Instruct user to manually type the amount since this is a static QR code
+            if(qrImage) qrImage.src = 'phonepe-qr.png';
+            
+            // Update instruction text dynamically
+            const instr = document.querySelector('#qrModal p:last-of-type');
+            if(instr) instr.textContent = `Open Google Pay, PhonePe, or Paytm, scan this code, and manually enter ${formattedAmount} to complete checkout.`;
             
             if(qrModal) qrModal.classList.add('active');
         } else {
