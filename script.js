@@ -344,18 +344,34 @@ tiltElements.forEach(el => {
     });
 });
 
-// ===== Desktop UPI Payment Interceptor =====
+// ===== Desktop UPI QR Modal Logic =====
+const qrModal = document.getElementById('qrModal');
+const qrCloseBtn = document.getElementById('qrCloseBtn');
+const qrPlanChoice = document.getElementById('qrPlanChoice');
+const qrAmountDisplay = document.getElementById('qrAmountDisplay');
+const qrImage = document.getElementById('qrImage');
+
 const upiButtons = document.querySelectorAll('.upi-pay-btn');
 upiButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
-        // Native hrefs work flawlessly on Mobile OS, but break on desktops. 
         if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            e.preventDefault(); // Stop desktop browser from trying to open unhandled upi://
+            e.preventDefault(); 
             const plan = btn.getAttribute('data-plan');
             const amount = btn.getAttribute('data-amount');
-            alert(`To purchase the ${plan} Plan for ₹${amount}:\nPlease open Google Pay, PhonePe, or Paytm on your phone and send the exact amount to UPI ID: 9553320142-3@axl`);
+            const upiLink = btn.href; 
+            
+            // Format amount visually seamlessly with Indian numbering system
+            const formattedAmount = '₹' + parseInt(amount).toLocaleString('en-IN');
+            
+            if(qrPlanChoice) qrPlanChoice.textContent = plan + ' Plan';
+            if(qrAmountDisplay) qrAmountDisplay.textContent = formattedAmount;
+            
+            // Generate QR code dynamically via API containing original scheme parameters
+            if(qrImage) qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(upiLink)}`;
+            
+            if(qrModal) qrModal.classList.add('active');
         } else {
-            // Give a fallback prompt on mobile ONLY IF the app fails to open the URI
+            // Mobile fallback prompt ONLY IF the native OS app routing strictly fails
             setTimeout(() => {
                 const plan = btn.getAttribute('data-plan');
                 const amount = btn.getAttribute('data-amount');
@@ -364,3 +380,16 @@ upiButtons.forEach(btn => {
         }
     });
 });
+
+if(qrCloseBtn) {
+    qrCloseBtn.addEventListener('click', () => {
+        qrModal.classList.remove('active');
+    });
+}
+if(qrModal) {
+    qrModal.addEventListener('click', (e) => {
+        if(e.target === qrModal) {
+            qrModal.classList.remove('active');
+        }
+    });
+}

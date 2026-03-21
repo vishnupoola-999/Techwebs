@@ -738,6 +738,20 @@
         </div>
     </footer>
 
+    <!-- Desktop QR Code Payment Modal -->
+    <div class="qr-modal-overlay" id="qrModal">
+        <div class="qr-modal-content 3d-tilt">
+            <button class="qr-close-btn" id="qrCloseBtn">&times;</button>
+            <h3 style="margin-bottom: 0.5rem; color: var(--text-main);">Scan to Subscribe</h3>
+            <p id="qrPlanChoice" style="color: var(--text-muted); margin-bottom: 1.5rem;">Plan Name</p>
+            <div class="qr-image-wrapper" style="display: inline-block; padding: 10px; background: white; border-radius: 12px; border: 2px solid var(--accent-purple);">
+                <img id="qrImage" src="" alt="UPI QR Code" style="width: 250px; height: 250px; display: block;">
+            </div>
+            <h2 id="qrAmountDisplay" class="text-gradient-purple" style="margin-top: 1.5rem; font-size: 2.5rem;">₹0</h2>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">Open Google Pay, PhonePe, or Paytm on your phone and scan this code to complete your checkout.</p>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
