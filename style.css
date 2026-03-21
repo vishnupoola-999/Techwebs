@@ -923,7 +923,7 @@ h1, h2, h3, h4 {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding-bottom: 0.5rem;
     width: 100%;
-    word-break: break-all;
+    word-break: break-word;
     transition: border-color 0.3s;
 }
 .contact-link:hover {
@@ -1377,6 +1377,14 @@ footer {
     }
     .contact-info p {
         font-size: 0.95rem;
+    }
+    .contact-link {
+        font-size: clamp(0.7rem, 4.5vw, 1.1rem) !important;
+    }
+    .stats-row {
+        flex-direction: column;
+        gap: 2.5rem;
+        padding: 2.5rem;
     }
     .footer-content {
         flex-direction: column;
