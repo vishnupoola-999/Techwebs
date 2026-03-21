@@ -393,7 +393,29 @@ if(qrCloseBtn) {
 if(qrModal) {
     qrModal.addEventListener('click', (e) => {
         if(e.target === qrModal) {
-            qrModal.classList.remove('active');
         }
     });
 }
+
+// ===== Polyfill for Aggressive Browser/CDN Caching =====
+// If a user's browser executes an older cached version of index.html 
+// that still uses onclick="handleUPIPayment()", this prevents the page from breaking.
+window.handleUPIPayment = function(planName, amount) {
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        const formattedAmount = '₹' + parseInt(amount).toLocaleString('en-IN');
+        if(qrPlanChoice) qrPlanChoice.textContent = planName + ' Plan';
+        if(qrAmountDisplay) qrAmountDisplay.textContent = formattedAmount;
+        if(qrImage) qrImage.src = 'phonepe-qr.png';
+        
+        const instr = document.querySelector('#qrModal p:last-of-type');
+        if(instr) instr.textContent = `Open Google Pay, PhonePe, or Paytm, scan this code, and manually enter ${formattedAmount} to complete checkout.`;
+        
+        if(qrModal) qrModal.classList.add('active');
+    } else {
+        const upiLink = `upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=${amount}.00&cu=INR&tn=${encodeURIComponent('Payment for ' + planName + ' Plan')}`;
+        window.location.href = upiLink;
+        setTimeout(() => {
+            alert(`If your UPI app didn't open automatically, please manually send ₹${amount} to 9553320142-3@axl for the ${planName} Plan.`);
+        }, 3000);
+    }
+};
