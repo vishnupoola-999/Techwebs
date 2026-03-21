@@ -33,14 +33,16 @@ document.addEventListener('mousemove', (e) => {
 
 // Animation loop for smooth follower interpolation
 function loop() {
-    cursorX += (mouseX - cursorX) * 0.5;
-    cursorY += (mouseY - cursorY) * 0.5;
-    
-    followerX += (mouseX - followerX) * 0.15;
-    followerY += (mouseY - followerY) * 0.15;
-    
-    cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-    follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+    if (window.innerWidth > 768) {
+        cursorX += (mouseX - cursorX) * 0.5;
+        cursorY += (mouseY - cursorY) * 0.5;
+        
+        followerX += (mouseX - followerX) * 0.15;
+        followerY += (mouseY - followerY) * 0.15;
+        
+        cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+        follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+    }
     
     requestAnimationFrame(loop);
 }
@@ -192,9 +194,9 @@ const geometries = [
     new THREE.TorusGeometry(1.3, 0.4, 16, 100),
     new THREE.DodecahedronGeometry(1.5, 0),
 ];
-
+const isMobile = window.innerWidth < 768;
 const shapes = [];
-const numShapes = 20;
+const numShapes = isMobile ? 8 : 20;
 
 for (let i = 0; i < numShapes; i++) {
     const geo = geometries[Math.floor(Math.random() * geometries.length)];
@@ -220,7 +222,7 @@ for (let i = 0; i < numShapes; i++) {
 
 // Particle System (Starfield)
 const particlesGeometry = new THREE.BufferGeometry();
-const particlesCount = 2000;
+const particlesCount = isMobile ? 500 : 2000;
 const posArray = new Float32Array(particlesCount * 3);
 
 for(let i=0; i < particlesCount * 3; i++) {
