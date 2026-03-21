@@ -344,78 +344,74 @@ tiltElements.forEach(el => {
     });
 });
 
-// ===== Desktop UPI QR Modal Logic =====
-const qrModal = document.getElementById('qrModal');
-const qrCloseBtn = document.getElementById('qrCloseBtn');
-const qrPlanChoice = document.getElementById('qrPlanChoice');
-const qrAmountDisplay = document.getElementById('qrAmountDisplay');
-const qrImage = document.getElementById('qrImage');
+// ===== Global UPI Payment Handler (Robust for all environments) =====
+function openUPIMyModal(planName, amount) {
+    const modal = document.getElementById('qrModal');
+    const qrPlan = document.getElementById('qrPlanChoice');
+    const qrAmt = document.getElementById('qrAmountDisplay');
+    const img = document.getElementById('qrImage');
+    const instr = document.querySelector('#qrModal p:last-of-type');
 
-const upiButtons = document.querySelectorAll('.upi-pay-btn');
-upiButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            e.preventDefault(); 
-            const plan = btn.getAttribute('data-plan');
-            const amount = btn.getAttribute('data-amount');
-            const upiLink = btn.href; 
-            
-            // Format amount visually seamlessly with Indian numbering system
-            const formattedAmount = '₹' + parseInt(amount).toLocaleString('en-IN');
-            
-            if(qrPlanChoice) qrPlanChoice.textContent = plan + ' Plan';
-            if(qrAmountDisplay) qrAmountDisplay.textContent = formattedAmount;
-            
-            // Instruct user to manually type the amount since this is a static QR code
-            if(qrImage) qrImage.src = 'phonepe-qr.png';
-            
-            // Update instruction text dynamically
-            const instr = document.querySelector('#qrModal p:last-of-type');
-            if(instr) instr.textContent = `Open Google Pay, PhonePe, or Paytm, scan this code, and manually enter ${formattedAmount} to complete checkout.`;
-            
-            if(qrModal) qrModal.classList.add('active');
-        } else {
-            // Mobile fallback prompt ONLY IF the native OS app routing strictly fails
-            setTimeout(() => {
-                const plan = btn.getAttribute('data-plan');
-                const amount = btn.getAttribute('data-amount');
-                alert(`If your UPI app didn't open automatically, please manually send ₹${amount} to 9553320142-3@axl for the ${plan} Plan.`);
-            }, 3000);
-        }
-    });
-});
+    if (!modal) return;
 
-if(qrCloseBtn) {
-    qrCloseBtn.addEventListener('click', () => {
-        qrModal.classList.remove('active');
-    });
-}
-if(qrModal) {
-    qrModal.addEventListener('click', (e) => {
-        if(e.target === qrModal) {
-        }
-    });
-}
+    // Is it mobile? (Better check)
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-// ===== Polyfill for Aggressive Browser/CDN Caching =====
-// If a user's browser executes an older cached version of index.html 
-// that still uses onclick="handleUPIPayment()", this prevents the page from breaking.
-window.handleUPIPayment = function(planName, amount) {
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    if (!isMobileDevice) {
+        // DESKTOP LOGIC
         const formattedAmount = '₹' + parseInt(amount).toLocaleString('en-IN');
-        if(qrPlanChoice) qrPlanChoice.textContent = planName + ' Plan';
-        if(qrAmountDisplay) qrAmountDisplay.textContent = formattedAmount;
-        if(qrImage) qrImage.src = 'phonepe-qr.png';
+        if(qrPlan) qrPlan.textContent = planName + ' Plan';
+        if(qrAmt) qrAmt.textContent = formattedAmount;
+        if(img) img.src = 'phonepe-qr.png';
+        if(instr) instr.textContent = `Open GPay, PhonePe, or Paytm, scan this code, and manually enter ${formattedAmount} to complete checkout.`;
         
-        const instr = document.querySelector('#qrModal p:last-of-type');
-        if(instr) instr.textContent = `Open Google Pay, PhonePe, or Paytm, scan this code, and manually enter ${formattedAmount} to complete checkout.`;
-        
-        if(qrModal) qrModal.classList.add('active');
+        modal.classList.add('active');
+        console.log("Desktop Modal Opened for " + planName);
     } else {
+        // MOBILE LOGIC
         const upiLink = `upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=${amount}.00&cu=INR&tn=${encodeURIComponent('Payment for ' + planName + ' Plan')}`;
         window.location.href = upiLink;
         setTimeout(() => {
             alert(`If your UPI app didn't open automatically, please manually send ₹${amount} to 9553320142-3@axl for the ${planName} Plan.`);
         }, 3000);
     }
+}
+
+// Attach event listeners when DOM is fully settled
+window.addEventListener('load', () => {
+    const upiBtns = document.querySelectorAll('.upi-pay-btn');
+    upiBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Prevent default browser behavior on desktop
+            if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            const plan = btn.getAttribute('data-plan');
+            const amount = btn.getAttribute('data-amount');
+            openUPIMyModal(plan, amount);
+        });
+    });
+
+    const closeBtn = document.getElementById('qrCloseBtn');
+    const modalOverlay = document.getElementById('qrModal');
+
+    if(closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+        });
+    }
+
+    if(modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if(e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+    }
+});
+
+// Polyfill for backward compatibility if onclick was used
+window.handleUPIPayment = function(plan, amount) {
+    openUPIMyModal(plan, amount);
 };
