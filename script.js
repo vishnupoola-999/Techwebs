@@ -681,6 +681,7 @@ tiltElements.forEach(el => {
 
     function startLogos() {
         try {
+            console.log('[TechWebs] Bootstrapping logos immediately');
             init3DLogo('logo-header');
             init3DLogo('logo-footer');
         } catch(err) {
@@ -688,9 +689,7 @@ tiltElements.forEach(el => {
         }
     }
 
-    if (document.readyState === 'complete') {
-        startLogos();
-    } else {
-        window.addEventListener('load', startLogos);
-    }
+    // Since script.js is at the bottom of the body, DOM is already parsed.
+    // Run immediately to avoid race conditions with window.onload on fast networks/cache.
+    startLogos();
 })();
