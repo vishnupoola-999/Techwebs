@@ -415,22 +415,18 @@ tiltElements.forEach(el => {
             var isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             if (!isMobileDevice) {
-                // DESKTOP: Show QR modal with dynamic QR code
+                // DESKTOP: Show QR modal with the user's uploaded QR code
                 var formattedAmount = '\u20B9' + parseInt(amount).toLocaleString('en-IN');
                 if(qrPlan) qrPlan.textContent = planName + ' Plan';
                 if(qrAmt) qrAmt.textContent = formattedAmount;
 
-                // Build UPI deep link with amount baked in
-                var upiString = 'upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=' + amount + '.00&cu=INR&tn=Payment%20for%20' + encodeURIComponent(planName) + '%20Plan';
-
-                // Generate dynamic QR code with amount pre-set
-                var qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(upiString) + '&margin=10';
+                // Load the exact QR code the user provided earlier
                 if(img) {
-                    img.src = qrApiUrl;
-                    img.alt = 'UPI QR Code for ' + planName + ' Plan - ' + formattedAmount;
+                    img.src = 'live-qr.jpeg';
+                    img.alt = 'TechWebs Official UPI QR Code';
                 }
 
-                if(instr) instr.textContent = 'Open Google Pay, PhonePe, or Paytm on your phone. Scan this QR code \u2014 the amount of ' + formattedAmount + ' is already set. Just confirm to pay.';
+                if(instr) instr.textContent = 'Open Google Pay, PhonePe, or Paytm on your phone. Scan this QR code and manually enter ' + formattedAmount + ' to pay for the ' + planName + ' Plan.';
                 
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -438,7 +434,14 @@ tiltElements.forEach(el => {
             } else {
                 // MOBILE: Redirect to UPI app
                 var upiLink = 'upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=' + amount + '.00&cu=INR&tn=' + encodeURIComponent('Payment for ' + planName + ' Plan');
-                window.location.href = upiLink;
+                
+                // Use anchor tag click for better mobile browser deep-link compatibility
+                var a = document.createElement('a');
+                a.href = upiLink;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
                 setTimeout(function() {
                     alert('If your UPI app didn\'t open automatically, please manually send \u20B9' + parseInt(amount).toLocaleString('en-IN') + ' to 9553320142-3@axl for the ' + planName + ' Plan.');
                 }, 3000);
