@@ -757,11 +757,99 @@
         </div>
     </div>
 
+    <!-- UPI Payment Handler (standalone — independent of script.js) -->
+    <script>
+    // ===== Global UPI Payment Handler =====
+    // This runs BEFORE Three.js/GSAP/script.js so it ALWAYS works
+    (function() {
+        function openUPIMyModal(planName, amount) {
+            try {
+                var modal = document.getElementById('qrModal');
+                var qrPlan = document.getElementById('qrPlanChoice');
+                var qrAmt = document.getElementById('qrAmountDisplay');
+                var img = document.getElementById('qrImage');
+                var instr = document.getElementById('qrInstructions');
+
+                if (!modal) {
+                    alert('Payment system loading... Please try again in a moment.');
+                    return;
+                }
+
+                var isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+                if (!isMobileDevice) {
+                    // DESKTOP: Show QR modal
+                    var formattedAmount = '\u20B9' + parseInt(amount).toLocaleString('en-IN');
+                    if(qrPlan) qrPlan.textContent = planName + ' Plan';
+                    if(qrAmt) qrAmt.textContent = formattedAmount;
+                    if(img) {
+                        img.src = 'live-qr.jpeg';
+                        img.alt = 'TechWebs Official UPI QR Code';
+                    }
+                    if(instr) instr.textContent = 'Open Google Pay, PhonePe, or Paytm on your phone. Scan this QR code and manually enter ' + formattedAmount + ' to pay for the ' + planName + ' Plan.';
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    // MOBILE: Redirect to UPI app with amount pre-set
+                    var upiLink = 'upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=' + amount + '.00&cu=INR&tn=' + encodeURIComponent('Payment for ' + planName + ' Plan');
+                    var a = document.createElement('a');
+                    a.href = upiLink;
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(function() {
+                        alert('If your UPI app didn\'t open automatically, please manually send \u20B9' + parseInt(amount).toLocaleString('en-IN') + ' to UPI ID: 9553320142-3@axl for the ' + planName + ' Plan.');
+                    }, 3000);
+                }
+            } catch(err) {
+                alert('Something went wrong. Please contact us via WhatsApp to complete your payment.');
+            }
+        }
+
+        // Expose globally for inline onclick
+        window.handleUPIPayment = openUPIMyModal;
+        window.openUPIMyModal = openUPIMyModal;
+
+        // Backup: attach listeners to all .upi-pay-btn buttons after DOM loads
+        window.addEventListener('load', function() {
+            var btns = document.querySelectorAll('.upi-pay-btn');
+            btns.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var plan = btn.getAttribute('data-plan');
+                    var amt = btn.getAttribute('data-amount');
+                    openUPIMyModal(plan, amt);
+                });
+            });
+
+            // Modal close handlers
+            var closeBtn = document.getElementById('qrCloseBtn');
+            var modalEl = document.getElementById('qrModal');
+            if(closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    if(modalEl) { modalEl.classList.remove('active'); document.body.style.overflow = ''; }
+                });
+            }
+            if(modalEl) {
+                modalEl.addEventListener('click', function(e) {
+                    if(e.target === modalEl) { modalEl.classList.remove('active'); document.body.style.overflow = ''; }
+                });
+            }
+            document.addEventListener('keydown', function(e) {
+                if(e.key === 'Escape' && modalEl && modalEl.classList.contains('active')) {
+                    modalEl.classList.remove('active'); document.body.style.overflow = '';
+                }
+            });
+        });
+    })();
+    </script>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="script.js?v=33"></script>
+    <script src="script.js?v=34"></script>
 
     <!-- WhatsApp Floating Button -->
     <a href="https://wa.me/919553320142?text=Hey%20Tech%20Webs!%20%F0%9F%9A%80%20I%20love%20your%20work.%20Let's%20build%20something%20iconic." target="_blank" class="whatsapp-float" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000; display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background-color: #25D366; color: white; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.4); text-decoration: none; transition: transform 0.3s ease;">
