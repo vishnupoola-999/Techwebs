@@ -210,6 +210,54 @@ for (let i = 0; i < numShapes; i++) {
     shapes.push(mesh);
 }
 
+// Add a featured premium "TW" logo model to the hero scene
+(function() {
+    var heroLogo = new THREE.Group();
+    
+    // Build T for the hero background
+    var tSolidH = new THREE.MeshStandardMaterial({ color: 0xb06cf7, metalness: 0.85, roughness: 0.12, emissive: 0x7c3aed, emissiveIntensity: 0.3, transparent: true, opacity: 0.85 });
+    var tEdgeH = new THREE.LineBasicMaterial({ color: 0xd8b4fe });
+    
+    var crossGH = new THREE.BoxGeometry(1.6, 0.35, 0.45);
+    var crossH = new THREE.Mesh(crossGH, tSolidH);
+    crossH.position.y = 0.75;
+    heroLogo.add(crossH);
+    heroLogo.add(new THREE.LineSegments(new THREE.EdgesGeometry(crossGH), tEdgeH).translateY(0.75));
+    
+    var stemGH = new THREE.BoxGeometry(0.4, 1.5, 0.45);
+    var stemH = new THREE.Mesh(stemGH, tSolidH);
+    stemH.position.y = -0.1;
+    heroLogo.add(stemH);
+    heroLogo.add(new THREE.LineSegments(new THREE.EdgesGeometry(stemGH), tEdgeH).translateY(-0.1));
+    
+    // Build W web for the hero background
+    var wWireH = new THREE.LineBasicMaterial({ color: 0xddff33 });
+    var icoH = new THREE.IcosahedronGeometry(0.9, 1);
+    var icoLinesH = new THREE.LineSegments(new THREE.WireframeGeometry(icoH), wWireH);
+    icoLinesH.position.set(0.8, -0.1, 0);
+    icoLinesH.scale.set(1.1, 1.3, 0.8);
+    heroLogo.add(icoLinesH);
+    
+    var dodH = new THREE.DodecahedronGeometry(0.75, 0);
+    var dodLinesH = new THREE.LineSegments(new THREE.WireframeGeometry(dodH), new THREE.LineBasicMaterial({ color: 0xaadd00, transparent: true, opacity: 0.5 }));
+    dodLinesH.position.set(0.9, 0.05, 0);
+    dodLinesH.scale.set(1.3, 1.1, 0.7);
+    dodLinesH.rotation.z = 0.3;
+    heroLogo.add(dodLinesH);
+    
+    heroLogo.position.set(5, 2, -2);
+    heroLogo.scale.set(1.5, 1.5, 1.5);
+    heroLogo.userData = {
+        originalY: 2,
+        rotationSpeedX: 0.005,
+        rotationSpeedY: 0.012,
+        floatSpeed: 0.6,
+        floatOffset: Math.random() * Math.PI
+    };
+    scene.add(heroLogo);
+    shapes.push(heroLogo);
+})();
+
 // Particle System (Starfield)
 const particlesGeometry = new THREE.BufferGeometry();
 const particlesCount = isMobile ? 500 : 2000;
@@ -344,186 +392,404 @@ tiltElements.forEach(el => {
     });
 });
 
-// ===== Global UPI Payment Handler (Robust for all environments) =====
-function openUPIMyModal(planName, amount) {
-    const modal = document.getElementById('qrModal');
-    const qrPlan = document.getElementById('qrPlanChoice');
-    const qrAmt = document.getElementById('qrAmountDisplay');
-    const img = document.getElementById('qrImage');
-    const instr = document.querySelector('#qrModal p:last-of-type');
+// ===== Global UPI Payment Handler (Robust & Error-Proof) =====
+// This section is wrapped in try-catch so it ALWAYS works even if other scripts fail
+(function() {
+    'use strict';
 
-    if (!modal) return;
+    function openUPIMyModal(planName, amount) {
+        try {
+            var modal = document.getElementById('qrModal');
+            var qrPlan = document.getElementById('qrPlanChoice');
+            var qrAmt = document.getElementById('qrAmountDisplay');
+            var img = document.getElementById('qrImage');
+            var instr = document.getElementById('qrInstructions');
 
-    // Is it mobile? (Better check)
-    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    if (!isMobileDevice) {
-        // DESKTOP LOGIC
-        const formattedAmount = '₹' + parseInt(amount).toLocaleString('en-IN');
-        if(qrPlan) qrPlan.textContent = planName + ' Plan';
-        if(qrAmt) qrAmt.textContent = formattedAmount;
-        if(img) img.src = 'phonepe-qr.png';
-        if(instr) instr.textContent = `Open GPay, PhonePe, or Paytm, scan this code, and manually enter ${formattedAmount} to complete checkout.`;
-        
-        modal.classList.add('active');
-        console.log("Desktop Modal Opened for " + planName);
-    } else {
-        // MOBILE LOGIC
-        const upiLink = `upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=${amount}.00&cu=INR&tn=${encodeURIComponent('Payment for ' + planName + ' Plan')}`;
-        window.location.href = upiLink;
-        setTimeout(() => {
-            alert(`If your UPI app didn't open automatically, please manually send ₹${amount} to 9553320142-3@axl for the ${planName} Plan.`);
-        }, 3000);
-    }
-}
-
-// Attach event listeners when DOM is fully settled
-window.addEventListener('load', () => {
-    const upiBtns = document.querySelectorAll('.upi-pay-btn');
-    upiBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            // Prevent default browser behavior on desktop
-            if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                e.preventDefault();
-                e.stopPropagation();
+            if (!modal) {
+                console.error('QR Modal element #qrModal not found in DOM!');
+                alert('Payment system loading... Please try again in a moment.');
+                return;
             }
-            const plan = btn.getAttribute('data-plan');
-            const amount = btn.getAttribute('data-amount');
-            openUPIMyModal(plan, amount);
-        });
-    });
 
-    const closeBtn = document.getElementById('qrCloseBtn');
-    const modalOverlay = document.getElementById('qrModal');
+            // Is it mobile?
+            var isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    if(closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            modalOverlay.classList.remove('active');
-        });
+            if (!isMobileDevice) {
+                // DESKTOP: Show QR modal with dynamic QR code
+                var formattedAmount = '\u20B9' + parseInt(amount).toLocaleString('en-IN');
+                if(qrPlan) qrPlan.textContent = planName + ' Plan';
+                if(qrAmt) qrAmt.textContent = formattedAmount;
+
+                // Build UPI deep link with amount baked in
+                var upiString = 'upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=' + amount + '.00&cu=INR&tn=Payment%20for%20' + encodeURIComponent(planName) + '%20Plan';
+
+                // Generate dynamic QR code with amount pre-set
+                var qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(upiString) + '&margin=10';
+                if(img) {
+                    img.src = qrApiUrl;
+                    img.alt = 'UPI QR Code for ' + planName + ' Plan - ' + formattedAmount;
+                }
+
+                if(instr) instr.textContent = 'Open Google Pay, PhonePe, or Paytm on your phone. Scan this QR code \u2014 the amount of ' + formattedAmount + ' is already set. Just confirm to pay.';
+                
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('[TechWebs] Desktop QR Modal opened for ' + planName + ' at ' + formattedAmount);
+            } else {
+                // MOBILE: Redirect to UPI app
+                var upiLink = 'upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=' + amount + '.00&cu=INR&tn=' + encodeURIComponent('Payment for ' + planName + ' Plan');
+                window.location.href = upiLink;
+                setTimeout(function() {
+                    alert('If your UPI app didn\'t open automatically, please manually send \u20B9' + parseInt(amount).toLocaleString('en-IN') + ' to 9553320142-3@axl for the ' + planName + ' Plan.');
+                }, 3000);
+            }
+        } catch(err) {
+            console.error('[TechWebs] Payment error:', err);
+            alert('Something went wrong. Please contact us via WhatsApp to complete your payment.');
+        }
     }
 
-    if(modalOverlay) {
-        modalOverlay.addEventListener('click', (e) => {
-            if(e.target === modalOverlay) {
+    // Expose globally so inline onclick works
+    window.handleUPIPayment = openUPIMyModal;
+    window.openUPIMyModal = openUPIMyModal;
+
+    // Close button & overlay close - use DOMContentLoaded for reliability
+    function initModalClose() {
+        var closeBtn = document.getElementById('qrCloseBtn');
+        var modalOverlay = document.getElementById('qrModal');
+
+        if(closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                if(modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        if(modalOverlay) {
+            modalOverlay.addEventListener('click', function(e) {
+                if(e.target === modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if(e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
                 modalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
-    }
-});
 
-// Polyfill for backward compatibility if onclick was used
-window.handleUPIPayment = function(plan, amount) {
-    openUPIMyModal(plan, amount);
-};
-
-// ===== Interactive 3D Logo Implementation =====
-function init3DLogo(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) {
-        console.warn(`3D Logo Container #${containerId} not found.`);
-        return;
+        console.log('[TechWebs] QR Modal close handlers initialized.');
     }
 
-    console.log(`Initializing 3D Logo for #${containerId}...`);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    camera.position.z = 2.5;
-
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    
-    // Get dimensions, fallback if not ready
-    let width = container.clientWidth || 45;
-    let height = container.clientHeight || 45;
-    
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
-
-    const logoGroup = new THREE.Group();
-    scene.add(logoGroup);
-
-    // Create 'T' (Solid Purple)
-    const tGroup = new THREE.Group();
-    const tMat = new THREE.MeshPhysicalMaterial({ 
-        color: 0xa855f7, 
-        metalness: 0.8, 
-        roughness: 0.1,
-        emissive: 0x6b21a8,
-        emissiveIntensity: 0.3
-    });
-    
-    const tTop = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.25, 0.25), tMat);
-    tTop.position.y = 0.45;
-    const tStick = new THREE.Mesh(new THREE.BoxGeometry(0.25, 1.1, 0.25), tMat);
-    tStick.position.y = 0;
-    
-    tGroup.add(tTop, tStick);
-    tGroup.position.x = -0.4; // Offset to sit next to W
-    logoGroup.add(tGroup);
-
-    // Create 'W' (Neon Green Wireframe)
-    const wGroup = new THREE.Group();
-    const wLineMat = new THREE.LineBasicMaterial({ color: 0xccff00, linewidth: 2 });
-    
-    const createWBar = (x, rotZ) => {
-        const geom = new THREE.BoxGeometry(0.15, 1.1, 0.15);
-        const wireframe = new THREE.WireframeGeometry(geom);
-        const line = new THREE.LineSegments(wireframe, wLineMat);
-        line.position.x = x;
-        line.rotation.z = rotZ;
-        return line;
-    };
-
-    wGroup.add(createWBar(0, 0.3));
-    wGroup.add(createWBar(0.3, -0.3));
-    wGroup.add(createWBar(0.6, 0.3));
-    wGroup.add(createWBar(0.9, -0.3));
-    
-    wGroup.position.x = 0.1;
-    wGroup.position.y = -0.1;
-    logoGroup.add(wGroup);
-
-    // Center the whole logo
-    logoGroup.position.x = -0.2; 
-
-    // Lights
-    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-    const pointLight = new THREE.PointLight(0xffffff, 1.2);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    let targetRotX = 0;
-    let targetRotY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        targetRotY = (e.clientX / window.innerWidth - 0.5) * 1.2;
-        targetRotX = (e.clientY / window.innerHeight - 0.5) * 1.2;
-    });
-
-    function animate() {
-        requestAnimationFrame(animate);
-        logoGroup.rotation.y += (targetRotY - logoGroup.rotation.y) * 0.05;
-        logoGroup.rotation.x += (targetRotX - logoGroup.rotation.x) * 0.05;
-        logoGroup.rotation.y += 0.005; // Idle
-        renderer.render(scene, camera);
+    // Bind close handlers as soon as possible
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initModalClose);
+    } else {
+        initModalClose();
     }
-    animate();
+})();
 
-    // Resize handler
-    window.addEventListener('resize', () => {
-        renderer.setSize(container.clientWidth || 45, container.clientHeight || 45);
-    });
-}
+// ===== Premium 3D TW Logo — Hollow Extruded T + Wireframe Web W =====
+(function() {
+    'use strict';
 
-// Robust bootstrapper
-function startLogos() {
-    init3DLogo('logo-header');
-    init3DLogo('logo-footer');
-}
+    // Helper: create a hollow "tube frame" letter T from box edges
+    function buildLetterT(scale) {
+        var tGroup = new THREE.Group();
+        
+        // Material for the solid purple T body
+        var tSolid = new THREE.MeshStandardMaterial({
+            color: 0xb06cf7,
+            metalness: 0.85,
+            roughness: 0.12,
+            emissive: 0x7c3aed,
+            emissiveIntensity: 0.35,
+            transparent: true,
+            opacity: 0.88
+        });
+        
+        // Edge material — brighter purple for the wireframe edges
+        var tEdge = new THREE.LineBasicMaterial({ color: 0xd8b4fe });
+        
+        // Cross-bar of the T (horizontal)
+        var crossGeo = new THREE.BoxGeometry(1.6 * scale, 0.35 * scale, 0.45 * scale);
+        var crossMesh = new THREE.Mesh(crossGeo, tSolid);
+        crossMesh.position.y = 0.75 * scale;
+        tGroup.add(crossMesh);
+        
+        // Edges on the crossbar
+        var crossEdges = new THREE.LineSegments(new THREE.EdgesGeometry(crossGeo), tEdge);
+        crossEdges.position.copy(crossMesh.position);
+        tGroup.add(crossEdges);
+        
+        // Vertical stem of the T
+        var stemGeo = new THREE.BoxGeometry(0.4 * scale, 1.5 * scale, 0.45 * scale);
+        var stemMesh = new THREE.Mesh(stemGeo, tSolid);
+        stemMesh.position.y = -0.1 * scale;
+        tGroup.add(stemMesh);
+        
+        var stemEdges = new THREE.LineSegments(new THREE.EdgesGeometry(stemGeo), tEdge);
+        stemEdges.position.copy(stemMesh.position);
+        tGroup.add(stemEdges);
+        
+        // Inner cutout blocks to create the "hollow frame" look (top-left and top-right)
+        var cutMat = new THREE.MeshStandardMaterial({
+            color: 0x9333ea,
+            metalness: 0.9,
+            roughness: 0.1,
+            emissive: 0x581c87,
+            emissiveIntensity: 0.5
+        });
+        
+        var innerGeoL = new THREE.BoxGeometry(0.45 * scale, 0.15 * scale, 0.25 * scale);
+        var innerL = new THREE.Mesh(innerGeoL, cutMat);
+        innerL.position.set(-0.48 * scale, 0.75 * scale, 0);
+        tGroup.add(innerL);
+        var innerEdgesL = new THREE.LineSegments(new THREE.EdgesGeometry(innerGeoL), tEdge);
+        innerEdgesL.position.copy(innerL.position);
+        tGroup.add(innerEdgesL);
+        
+        var innerR = new THREE.Mesh(innerGeoL, cutMat);
+        innerR.position.set(0.48 * scale, 0.75 * scale, 0);
+        tGroup.add(innerR);
+        var innerEdgesR = new THREE.LineSegments(new THREE.EdgesGeometry(innerGeoL), tEdge);
+        innerEdgesR.position.copy(innerR.position);
+        tGroup.add(innerEdgesR);
+        
+        // Serifs / connecting brackets
+        var bracketGeo = new THREE.BoxGeometry(0.12 * scale, 0.35 * scale, 0.35 * scale);
+        var bracketL = new THREE.Mesh(bracketGeo, tSolid);
+        bracketL.position.set(-0.2 * scale, 0.42 * scale, 0);
+        tGroup.add(bracketL);
+        var bracketEdgesL = new THREE.LineSegments(new THREE.EdgesGeometry(bracketGeo), tEdge);
+        bracketEdgesL.position.copy(bracketL.position);
+        tGroup.add(bracketEdgesL);
+        
+        var bracketR = new THREE.Mesh(bracketGeo, tSolid);
+        bracketR.position.set(0.2 * scale, 0.42 * scale, 0);
+        tGroup.add(bracketR);
+        var bracketEdgesR = new THREE.LineSegments(new THREE.EdgesGeometry(bracketGeo), tEdge);
+        bracketEdgesR.position.copy(bracketR.position);
+        tGroup.add(bracketEdgesR);
+        
+        return tGroup;
+    }
+    
+    // Helper: create a "W" as a complex wireframe web structure
+    function buildLetterW(scale) {
+        var wGroup = new THREE.Group();
+        
+        // Material for thin solid struts
+        var wSolid = new THREE.MeshStandardMaterial({
+            color: 0xccff00,
+            metalness: 0.6,
+            roughness: 0.25,
+            emissive: 0x88aa00,
+            emissiveIntensity: 0.4,
+            transparent: true,
+            opacity: 0.85
+        });
+        
+        var wWireMat = new THREE.LineBasicMaterial({ color: 0xddff33 });
+        
+        // Build the W from 4 angled struts (V shapes)
+        function createStrut(x, angle, height) {
+            var strutGeo = new THREE.BoxGeometry(0.08 * scale, height * scale, 0.12 * scale);
+            var strut = new THREE.Mesh(strutGeo, wSolid);
+            strut.position.x = x * scale;
+            strut.rotation.z = angle;
+            
+            var strutEdge = new THREE.LineSegments(new THREE.EdgesGeometry(strutGeo), wWireMat);
+            strutEdge.position.copy(strut.position);
+            strutEdge.rotation.copy(strut.rotation);
+            
+            var g = new THREE.Group();
+            g.add(strut, strutEdge);
+            return g;
+        }
+        
+        // Left V
+        wGroup.add(createStrut(-0.5, 0.28, 1.4));
+        wGroup.add(createStrut(-0.15, -0.28, 1.4));
+        // Right V
+        wGroup.add(createStrut(0.2, 0.28, 1.4));
+        wGroup.add(createStrut(0.55, -0.28, 1.4));
+        
+        // Create the web mesh overlay — an icosahedron wireframe
+        var icoGeo = new THREE.IcosahedronGeometry(0.9 * scale, 1);
+        var icoWire = new THREE.WireframeGeometry(icoGeo);
+        var icoLines = new THREE.LineSegments(icoWire, wWireMat);
+        icoLines.position.x = 0.05 * scale;
+        icoLines.position.y = -0.1 * scale;
+        icoLines.scale.set(1.1, 1.3, 0.8);
+        wGroup.add(icoLines);
+        
+        // Add a second, larger dodecahedron web layer for complexity
+        var dodGeo = new THREE.DodecahedronGeometry(0.75 * scale, 0);
+        var dodWire = new THREE.WireframeGeometry(dodGeo);
+        var dodLines = new THREE.LineSegments(dodWire, new THREE.LineBasicMaterial({ color: 0xaadd00, transparent: true, opacity: 0.5 }));
+        dodLines.position.x = 0.1 * scale;
+        dodLines.position.y = 0.05 * scale;
+        dodLines.scale.set(1.3, 1.1, 0.7);
+        dodLines.rotation.z = 0.3;
+        wGroup.add(dodLines);
+        
+        // Add small connector nodes at intersections
+        var nodeMat = new THREE.MeshStandardMaterial({ color: 0xeeff66, metalness: 0.9, roughness: 0.1, emissive: 0xccff00, emissiveIntensity: 0.6 });
+        var nodeGeo = new THREE.SphereGeometry(0.04 * scale, 6, 6);
+        var nodePositions = [
+            [-0.5, 0.5], [-0.15, -0.5], [-0.33, 0], 
+            [0.2, 0.5], [0.55, -0.5], [0.03, 0],
+            [0.38, 0], [-0.5, -0.5], [0.55, 0.5]
+        ];
+        nodePositions.forEach(function(pos) {
+            var node = new THREE.Mesh(nodeGeo, nodeMat);
+            node.position.set(pos[0] * scale, pos[1] * scale, 0.15 * scale);
+            wGroup.add(node);
+        });
+        
+        return wGroup;
+    }
 
-if (document.readyState === 'complete') {
-    startLogos();
-} else {
-    window.addEventListener('load', startLogos);
-}
+    function init3DLogo(containerId) {
+        var container = document.getElementById(containerId);
+        if (!container) {
+            console.warn('[TechWebs] 3D Logo Container #' + containerId + ' not found.');
+            return;
+        }
+
+        var testCanvas = document.createElement('canvas');
+        var gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+        if (!gl) {
+            console.warn('[TechWebs] WebGL not supported, using fallback logo for #' + containerId);
+            addFallbackLogo(container);
+            return;
+        }
+
+        try {
+            console.log('[TechWebs] Initializing Premium 3D Logo for #' + containerId + '...');
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+            camera.position.z = 4.5;
+
+            var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            var width = container.clientWidth || 60;
+            var height = container.clientHeight || 60;
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setClearColor(0x000000, 0);
+            container.innerHTML = '';
+            container.appendChild(renderer.domElement);
+
+            var logoGroup = new THREE.Group();
+            scene.add(logoGroup);
+
+            // Build the T
+            var letterT = buildLetterT(1.0);
+            letterT.position.x = -0.7;
+            letterT.position.y = -0.1;
+            logoGroup.add(letterT);
+
+            // Build the W (web structure)
+            var letterW = buildLetterW(1.0);
+            letterW.position.x = 0.55;
+            letterW.position.y = -0.15;
+            logoGroup.add(letterW);
+            
+            // Center the combined logo
+            logoGroup.position.x = -0.05;
+            logoGroup.scale.set(1.15, 1.15, 1.15);
+
+            // Premium lighting setup
+            scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+            
+            var keyLight = new THREE.PointLight(0xd8b4fe, 3.5, 25);
+            keyLight.position.set(4, 4, 6);
+            scene.add(keyLight);
+            
+            var fillLight = new THREE.PointLight(0xccff00, 2.5, 25);
+            fillLight.position.set(-4, -2, 5);
+            scene.add(fillLight);
+
+            var rimLight = new THREE.PointLight(0x00d2ff, 1.5, 20);
+            rimLight.position.set(0, -3, -3);
+            scene.add(rimLight);
+            
+            var topLight = new THREE.PointLight(0xffffff, 2.0, 15);
+            topLight.position.set(0, 5, 4);
+            scene.add(topLight);
+
+            // Mouse interaction
+            var targetRotX = 0, targetRotY = 0;
+            document.addEventListener('mousemove', function(e) {
+                targetRotY = (e.clientX / window.innerWidth - 0.5) * 1.8;
+                targetRotX = (e.clientY / window.innerHeight - 0.5) * 1.2;
+            });
+
+            // Animation with floating + scroll reaction
+            var lastScrollY = window.scrollY;
+            var time = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.016;
+                
+                // Mouse follow
+                logoGroup.rotation.y += (targetRotY - logoGroup.rotation.y) * 0.04;
+                logoGroup.rotation.x += (targetRotX - logoGroup.rotation.x) * 0.04;
+                
+                // Idle spin + scroll
+                var currentScroll = window.scrollY;
+                var scrollDelta = currentScroll - lastScrollY;
+                logoGroup.rotation.y += 0.008 + (scrollDelta * 0.006);
+                lastScrollY = currentScroll;
+                
+                // Gentle floating bob
+                logoGroup.position.y = Math.sin(time * 1.5) * 0.05;
+                
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Resize
+            window.addEventListener('resize', function() {
+                var w = container.clientWidth || 60;
+                var h = container.clientHeight || 60;
+                renderer.setSize(w, h);
+            });
+
+            console.log('[TechWebs] Premium 3D Logo rendered for #' + containerId);
+
+        } catch(err) {
+            console.error('[TechWebs] 3D Logo failed for #' + containerId + ':', err);
+            addFallbackLogo(container);
+        }
+    }
+
+    function addFallbackLogo(container) {
+        container.innerHTML = '<svg viewBox="0 0 45 45" width="45" height="45"><text x="5" y="32" font-family="Syne, sans-serif" font-weight="800" font-size="20" fill="url(#twGrad)">TW</text><defs><linearGradient id="twGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#ccff00"/></linearGradient></defs></svg>';
+    }
+
+    window.init3DLogo = init3DLogo;
+
+    function startLogos() {
+        try {
+            init3DLogo('logo-header');
+            init3DLogo('logo-footer');
+        } catch(err) {
+            console.error('[TechWebs] Logo bootstrap failed:', err);
+        }
+    }
+
+    if (document.readyState === 'complete') {
+        startLogos();
+    } else {
+        window.addEventListener('load', startLogos);
+    }
+})();

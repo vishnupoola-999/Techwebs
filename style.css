@@ -1080,10 +1080,15 @@ footer {
     margin-bottom: 4rem;
 }
 .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 2rem;
     margin-bottom: 5rem;
+}
+.team-grid .team-card {
+    flex: 1 1 300px;
+    max-width: 400px;
 }
 .team-card {
     background: rgba(255, 255, 255, 0.02);
@@ -1429,13 +1434,19 @@ footer {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    overflow: visible; /* Allow glow to bleed out */
+    overflow: visible;
+    position: relative;
+    min-width: 45px;
+    min-height: 45px;
+    z-index: 10;
 }
 .logo-3d-canvas canvas {
     display: block;
-    width: 100% !important;
-    height: 100% !important;
-    filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.3));
+    filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.5)) drop-shadow(0 0 6px rgba(204, 255, 0, 0.4));
+    transition: filter 0.3s ease;
+}
+.logo-3d-canvas:hover canvas {
+    filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.7)) drop-shadow(0 0 10px rgba(204, 255, 0, 0.6));
 }
 
 /* ===== QR Code Modal for Desktop ===== */
@@ -1486,4 +1497,46 @@ footer {
 }
 .qr-close-btn:hover {
     color: var(--accent-purple);
+}
+
+/* Pricing Discount Styles */
+.price-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.price-original {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.price-new {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent-lime);
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.discount-badge {
+    background: var(--accent-lime);
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    vertical-align: middle;
+    margin-left: 10px;
+    box-shadow: 0 0 10px rgba(204, 255, 0, 0.3);
+}
+
+.pricing-card:hover .price-new {
+    color: #fff;
+    text-shadow: 0 0 15px var(--accent-lime);
 }
