@@ -778,15 +778,18 @@
                 var isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
                 if (!isMobileDevice) {
-                    // DESKTOP: Show QR modal
+                    // DESKTOP: Show QR modal with dynamic UPI QR code
                     var formattedAmount = '\u20B9' + parseInt(amount).toLocaleString('en-IN');
                     if(qrPlan) qrPlan.textContent = planName + ' Plan';
                     if(qrAmt) qrAmt.textContent = formattedAmount;
+                    // Generate a real UPI QR code with the amount pre-set
+                    var upiString = 'upi://pay?pa=9553320142-3@axl&pn=TechWebs&am=' + amount + '.00&cu=INR&tn=Payment%20for%20' + encodeURIComponent(planName) + '%20Plan';
+                    var qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(upiString) + '&margin=10';
                     if(img) {
-                        img.src = 'live-qr.jpeg';
-                        img.alt = 'TechWebs Official UPI QR Code';
+                        img.src = qrApiUrl;
+                        img.alt = 'UPI QR Code for ' + planName + ' Plan - ' + formattedAmount;
                     }
-                    if(instr) instr.textContent = 'Open Google Pay, PhonePe, or Paytm on your phone. Scan this QR code and manually enter ' + formattedAmount + ' to pay for the ' + planName + ' Plan.';
+                    if(instr) instr.textContent = 'Open Google Pay, PhonePe, or Paytm on your phone. Scan this QR code \u2014 the amount of ' + formattedAmount + ' is already set. Just confirm to pay.';
                     modal.classList.add('active');
                     document.body.style.overflow = 'hidden';
                 } else {
